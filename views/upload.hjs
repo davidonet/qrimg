@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>{{ title }}</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link rel='stylesheet' href='/css/style.css' />
+		<style>
+			body {
+				padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+			}
+		</style>
+	</head>
+	<body>
+		<div class="container">
+			<h1>QRIMG</h1>
+			<form enctype="multipart/form-data" method="post" action="/img/{{qrid}}">
+				<input type="file" name="image" id="file">
+				<br>
+				<input type="submit" name="submit" value="Envoyer">
+			</form>
+		</div>
+	</body>
+</html>
