@@ -3,7 +3,8 @@ var im = require('imagemagick');
 var mongo = require('mongoskin');
 var db = mongo.db("mongodb://dbserver/qrimg", {
 	safe : false
-})
+});
+var QRCode = require('qrcode');
 
 exports.post = function(req, res, next) {
 	var gsData = {
@@ -41,16 +42,29 @@ exports.post = function(req, res, next) {
 
 exports.get = function(req, res, next) {
 	db.gridfs().open(req.params.id, 'r', function(err, gs) {
-		gs.read(function(err, reply) {
-			if (err)
-				next(err);
-			else {
+		if (err) {
+			QRCode.draw('http://qi.bype.org/u/' + req.params.id, {
+				errorCorrectLevel : "high"
+			}, function(err, canvas) {
+				var stream = canvas.createPNGStream();
 				res.writeHead('200', {
-					'Content-Type' : gs.contentType,
-					'Cache-Control' : 'public, max-age= 10'
+					'Content-Type' : 'image/png',
+					'Cache-Control' : 'no-cache, private'
 				});
-				res.end(reply, gs.contentType);
-			}
-		});
+				stream.pipe(res);
+			});
+		} else {
+			gs.read(function(err, reply) {
+				if (err)
+					res.redirect('http://www.placehold.it/320x320/EFEFEF/AAAAAA');
+				else {
+					res.writeHead('200', {
+						'Content-Type' : gs.contentType,
+						'Cache-Control' : 'public, max-age=1800'
+					});
+					res.end(reply, gs.contentType);
+				}
+			});
+		}
 	});
 };

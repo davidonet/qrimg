@@ -27,7 +27,6 @@ app.configure('development', function() {
 
 app.get('/', routes.index);
 app.get('/u/:id', routes.upload);
-app.get('/qr/:id', routes.qrcode);
 app.post('/img/:id', img.post);
 app.get('/img/:id', img.get);
 
