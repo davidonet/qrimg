@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{{ title }}</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel='stylesheet' href='/css/style.css' />
+        <style>
+            body {
+                padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+            }
+        </style>
+    </head>
+    <body>
+
+        <div class="container">
+            <h1>David-o.net template page</h1>
+            <p>
+                A start hierarchy to build node / express / jquery application.
+            </p>
+        </div>
+        <script data-main="js/main" src="js/lib/require-jquery.js"></script>
+    </body>
+</html>
