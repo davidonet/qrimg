@@ -36,6 +36,7 @@ exports.post = function(req, res, next) {
 					fs.unlink(path, function(err) {
 						if (err)
 							throw err;
+						io.sockets.emit('imgid', req.params.id);
 						res.redirect(req.url);
 					});
 				});
@@ -44,7 +45,16 @@ exports.post = function(req, res, next) {
 	});
 };
 
-exports.get = function(req, res, next) {
+exports.del = function(req, res) {
+	db.gridfs().unlink(req.params.id, function(err, gs) {
+		io.sockets.emit('imgid', req.params.id);
+		res.json({
+			success : false
+		});
+	});
+};
+
+exports.get = function(req, res) {
 	db.gridfs().open(req.params.id, 'r', function(err, gs) {
 		if (err) {
 			QRCode.draw('http://qi.bype.org/u/' + req.params.id, {
@@ -67,6 +77,7 @@ exports.get = function(req, res, next) {
 						'Content-Type' : gs.contentType,
 						'Cache-Control' : 'public, max-age=1800'
 					});
+
 					res.end(reply, gs.contentType);
 				}
 			});

@@ -8,7 +8,7 @@ exports.index = function(req, res) {
 	db.set.findOne({
 		"sid" : req.params.sid
 	}, function(err, data) {
-		res.render('index',data);
+		res.render('index', data);
 	});
 };
 

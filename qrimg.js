@@ -33,12 +33,32 @@ app.configure('development', function() {
 });
 
 app.get('/:sid', routes.index);
-app.get('/u/:id', routes.upload);
 app.post('/img/:id', img.post);
 app.get('/img/:id', img.get);
+app.get('/del/:id', img.del);
 app.get('/set/gen/:sid/:count', set.gen);
 app.get('/set/get/:sid', set.get);
+app.get('/set/del/:sid', set.del);
+app.get('/u/:id', routes.upload);
 
-http.createServer(app).listen(app.get('port'), function() {
+
+var server = http.createServer(app).listen(app.get('port'), function() {
 	console.log("Express server listening on port " + app.get('port'));
 });
+
+var socket = require('socket.io');
+global.io = socket.listen(server, {
+	log : false
+});
+
+global.io.configure(function() {
+	io.set('log level', 0);
+});
+
+io.sockets.on('connection', function(socket) {
+	socket.on('imgid', function(data) {
+		socket.broadcast.emit('imgid', data);
+	});
+	this.setMaxListeners(0);
+});
+

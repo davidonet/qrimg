@@ -2,7 +2,8 @@ requirejs.config({
 	paths : {
 		underscore : 'lib/underscore',
 		bootstrap : 'lib/bootstrap',
-		qrcode : 'lib/qrcode.min'
+		qrcode : 'lib/qrcode.min',
+		socket : '/socket.io/socket.io'
 	},
 	shim : {
 		'underscore' : {
@@ -11,15 +12,14 @@ requirejs.config({
 	}
 });
 
-require(['jquery', 'underscore', 'bootstrap', 'qrcode'], function($, _) {
-	$(function() {
-		var qrcode = new QRCode("qrcode", {
-			text : "http://qi.bype.org/u/",
-			width : 256,
-			height : 256,
-			colorDark : "#000000",
-			colorLight : "#ffffff",
-			correctLevel : QRCode.CorrectLevel.M
+require(['jquery', 'underscore', 'socket'], function($, _) {
+	var socket = io.connect();
+	socket.on('imgid', function(id) {
+		console.log(id);
+		var t = new Date().getTime();
+		$('#' + id).fadeOut(function() {
+			$('#' + id).attr('src', '/img/' + id + '?r=' + t);
+			$('#' + id).fadeIn();
 		});
 	});
 });

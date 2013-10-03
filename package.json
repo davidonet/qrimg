@@ -12,6 +12,7 @@
     "imagemagick":"*",
     "mongoskin":"*",
     "node-uuid":"*",
-    "qrcode":"*"
+    "qrcode":"*",
+    "socket.io":"*"
   }
 }

@@ -16,7 +16,7 @@ var app = {
 		"url" : "git://github.com/davidonet/qrimg.git"
 	},
 	"scripts" : {
-		"start" : "qrimg.js"
+		"start" : "qrimggit .js"
 	}
 };
 

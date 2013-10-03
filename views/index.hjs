@@ -8,9 +8,8 @@
 	<body>
 
 		{{#ids}}
-		<div class='holder'><img src='/img/{{.}}'/>
+		<div class='holder'><img id='{{.}}' src='/img/{{.}}' onclick="$.get('/del/{{.}}')"/>
 		</div>
 		{{/ids}}
 		<script data-main="js/main" src="js/lib/require-jquery.js"></script>
 	</body>
-</html>
