@@ -4,9 +4,12 @@
 
 var uuid = require('node-uuid');
 
-
 exports.index = function(req, res) {
-	res.redirect('/img/' + uuid.v1());
+	db.set.findOne({
+		"sid" : req.params.sid
+	}, function(err, data) {
+		res.render('index',data);
+	});
 };
 
 exports.upload = function(req, res) {

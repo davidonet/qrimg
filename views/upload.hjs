@@ -3,21 +3,76 @@
 	<head>
 		<title>{{ title }}</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<link rel='stylesheet' href='/css/style.css' />
-		<style>
-			body {
-				padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
-			}
-		</style>
+		<link rel="stylesheet" href="http://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.css" />
+		<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+		<script src="http://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.js"></script>
+
 	</head>
 	<body>
-		<div class="container">
-			<h1>QRIMG</h1>
-			<form enctype="multipart/form-data" method="post" action="/img/{{qrid}}">
-				<input type="file" name="image" id="file">
-				<br>
-				<input type="submit" name="submit" value="Envoyer">
-			</form>
+		<div data-role="page">
+			<style>
+				.file-upload {
+					position: relative;
+				}
+				.file-upload input {
+					position: absolute;
+					visibility: hidden;
+				}
+				img{
+					max-width:256px;
+				}
+				
+			</style>
+			<div data-role="header">
+				<h3>Mur QRCode</h3>
+			</div>
+			<div data-role="content">
+				<form enctype="multipart/form-data" method="post" data-ajax="false" action="/img/{{qrid}}">
+					<label data-role="button" class="file-upload"> Choisir une image
+						<input type="file" name="image" id='file'/>
+						<div id="preview"></div>
+					</label>
+					
+					<ul id="info" data-role="listview" data-inset="true"></ul>
+					<input type="submit" name="submit" value="Envoyer l'image sur l'écran"/>
+				</form>
+
+			</div>
 		</div>
+		<script>
+			$("#chooseFile").click(function(e) {
+				e.preventDefault();
+				$("input[type=file]").trigger("click");
+			});
+			$("input[type=file]").change(function() {
+				var file = $("input[type=file]")[0].files[0];
+				$("#preview").empty();
+				displayAsImage3(file, "preview");
+
+				$info = $("#info");
+				$info.empty();
+				if (file && file.name) {
+					$info.append("<li>name:<span>" + file.name + "</span></li>");
+				}
+				if (file && file.size) {
+					$info.append("<li>size:<span>" + file.size + " bytes</span></li>");
+				}
+				$info.listview("refresh");
+			});
+
+			function displayAsImage3(file, containerid) {
+				if ( typeof FileReader !== "undefined") {
+					var container = document.getElementById(containerid), img = document.createElement("img"), reader;
+					container.appendChild(img);
+					reader = new FileReader();
+					reader.onload = ( function(theImg) {
+							return function(evt) {
+								theImg.src = evt.target.result;
+							};
+						}(img));
+					reader.readAsDataURL(file);
+				}
+			}
+		</script>
 	</body>
 </html>

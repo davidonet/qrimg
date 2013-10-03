@@ -1,9 +1,5 @@
 var fs = require('fs');
 var im = require('imagemagick');
-var mongo = require('mongoskin');
-var db = mongo.db("mongodb://dbserver/qrimg", {
-	safe : false
-});
 var QRCode = require('qrcode');
 
 exports.post = function(req, res, next) {
@@ -20,23 +16,31 @@ exports.post = function(req, res, next) {
 		srcPath : path,
 		dstPath : path,
 		progressive : false,
-		height : 320,
+		height : 238,
 		strip : true,
 		filter : 'Lagrange',
 		sharpening : 0.2
 	}, function(err, stdout, stderr) {
-		if (err)
-			throw err;
-		db.gridfs().open(gsData.metadata.qrid, 'w', gsData, function(err, gs) {
-			gs.writeFile(path, function(err, gs) {
-				fs.unlink(path, function(err) {
-					if (err)
-						throw err;
-					res.redirect(req.url);
+		im.crop({
+			srcPath : path,
+			dstPath : path,
+			width : 238,
+			height : 238,
+			quality : 1,
+			gravity : "Center"
+		}, function(err, stdout, stderr) {
+			if (err)
+				throw err;
+			db.gridfs().open(gsData.metadata.qrid, 'w', gsData, function(err, gs) {
+				gs.writeFile(path, function(err, gs) {
+					fs.unlink(path, function(err) {
+						if (err)
+							throw err;
+						res.redirect(req.url);
+					});
 				});
 			});
 		});
-
 	});
 };
 
@@ -44,7 +48,8 @@ exports.get = function(req, res, next) {
 	db.gridfs().open(req.params.id, 'r', function(err, gs) {
 		if (err) {
 			QRCode.draw('http://qi.bype.org/u/' + req.params.id, {
-				errorCorrectLevel : "high"
+				errorCorrectLevel : "high",
+				scale : 3
 			}, function(err, canvas) {
 				var stream = canvas.createPNGStream();
 				res.writeHead('200', {

@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>{{ sid }}</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link rel='stylesheet' href='/css/style.css' />
+	</head>
+	<body>
+
+		{{#ids}}
+		<div class='holder'><img src='/img/{{.}}'/>
+		</div>
+		{{/ids}}
+		<script data-main="js/main" src="js/lib/require-jquery.js"></script>
+	</body>
+</html>
