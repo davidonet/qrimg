@@ -26,12 +26,17 @@
 		<div align="center"  id='send'>
 			Touchez la photo pour l'envoyer
 		</div>
+		<div align="center"  id='sending'>
+			Transmission en cours
+		</div>
+
 		<script>
 			// Put event listeners into place
 			window.addEventListener("DOMContentLoaded", function() {
 
 				$('#snap').hide();
 				$('#send').hide();
+				$('#sending').hide();
 
 				// Grab elements, create settings, etc.
 				var canvas = document.getElementById("canvas"), context = canvas.getContext("2d"), video = document.getElementById("video"), videoObj = {
@@ -67,7 +72,10 @@
 
 				});
 				document.getElementById("canvas").addEventListener("click", function() {
+					$('#send').hide();
+					$("#canvas").hide();
 					var dataURL = canvas.toDataURL();
+					$('#sending').fadeIn();
 					$.ajax({
 						type : "POST",
 						url : "/img/{{qrid}}",
@@ -75,8 +83,7 @@
 							imgBase64 : dataURL
 						}
 					}).done(function(o) {
-						$('#send').fadeOut();
-						$("#canvas").fadeOut();
+						$('#sending').fadeOut();
 						console.log('saved');
 					});
 				});
