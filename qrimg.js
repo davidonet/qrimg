@@ -40,6 +40,7 @@ app.get('/set/gen/:sid/:count', set.gen);
 app.get('/set/get/:sid', set.get);
 app.get('/set/del/:sid', set.del);
 app.get('/u/:id', routes.upload);
+app.get('/w/:id', routes.webcam);
 
 
 var server = http.createServer(app).listen(app.get('port'), function() {

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>{{ title }}</title>
+		<meta name="viewport" content="width=640px">
+		<link rel="stylesheet" href="http://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.css" />
+		<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+		<script src="http://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.js"></script>
+		<style>
+			body {
+				font-size: 30px;
+				font-weight: bold;
+				width: 640px;
+			}
+		</style>
+	</head>
+	<body>
+		<div align="center" id='auth'>
+			Autorisez l'utilisation de la camera
+		</div>
+		<video id="video" width="640" height="480" autoplay></video>
+		<div align="center"  id='snap'>
+			Touchez la vidéo pour prendre une photo
+		</div>
+		<canvas id="canvas" width="640" height="480"></canvas>
+		<div align="center"  id='send'>
+			Touchez la photo pour l'envoyer
+		</div>
+		<script>
+			// Put event listeners into place
+			window.addEventListener("DOMContentLoaded", function() {
+
+				$('#snap').hide();
+				$('#send').hide();
+
+				// Grab elements, create settings, etc.
+				var canvas = document.getElementById("canvas"), context = canvas.getContext("2d"), video = document.getElementById("video"), videoObj = {
+					"video" : true
+				}, errBack = function(error) {
+					console.log("Video capture error: ", error.code);
+					window.location.replace("/u/{{qrid}}");
+				};
+
+				// Put video listeners into place
+				if (navigator.getUserMedia) {// Standard
+					navigator.getUserMedia(videoObj, function(stream) {
+						video.src = stream;
+						video.play();
+						$('#auth').hide();
+						$('#snap').fadeIn();
+					}, errBack);
+				} else if (navigator.webkitGetUserMedia) {// WebKit-prefixed
+					navigator.webkitGetUserMedia(videoObj, function(stream) {
+						video.src = window.webkitURL.createObjectURL(stream);
+						video.play();
+						$('#auth').hide();
+						$('#snap').fadeIn();
+					}, errBack);
+				}
+				document.getElementById("video").addEventListener("click", function() {
+					context.drawImage(video, 0, 0, 640, 480);
+					$('html, body').animate({
+						scrollTop : $("#canvas").offset().top
+					}, 300, "swing");
+					$('#send').fadeIn();
+					$("#canvas").fadeIn();
+
+				});
+				document.getElementById("canvas").addEventListener("click", function() {
+					var dataURL = canvas.toDataURL();
+					$.ajax({
+						type : "POST",
+						url : "/img/{{qrid}}",
+						data : {
+							imgBase64 : dataURL
+						}
+					}).done(function(o) {
+						$('#send').fadeOut();
+						$("#canvas").fadeOut();
+						console.log('saved');
+					});
+				});
+			}, false);
+
+		</script>
+	</body>
+</html>

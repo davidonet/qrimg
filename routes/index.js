@@ -17,3 +17,9 @@ exports.upload = function(req, res) {
 		qrid : req.params.id
 	});
 };
+
+exports.webcam = function(req, res) {
+	res.render('webcam', {
+		qrid : req.params.id
+	});
+};

@@ -15,7 +15,6 @@ requirejs.config({
 require(['jquery', 'underscore', 'socket'], function($, _) {
 	var socket = io.connect();
 	socket.on('imgid', function(id) {
-		console.log(id);
 		var t = new Date().getTime();
 		$('#' + id).fadeOut(function() {
 			$('#' + id).attr('src', '/img/' + id + '?r=' + t);
