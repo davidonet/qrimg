@@ -61,6 +61,8 @@
 						$('#auth').hide();
 						$('#snap').fadeIn();
 					}, errBack);
+				}else{
+					errBack();
 				}
 				document.getElementById("video").addEventListener("click", function() {
 					context.drawImage(video, 0, 0, 640, 480);
