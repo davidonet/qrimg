@@ -14,11 +14,11 @@ requirejs.config({
 
 require(['jquery', 'underscore', 'socket'], function($, _) {
 	var socket = io.connect();
-	socket.on('imgid', function(id) {
+	socket.on('imgid', function(data) {
 		var t = new Date().getTime();
-		$('#' + id).fadeOut(function() {
-			$('#' + id).attr('src', '/img/' + id + '?r=' + t);
-			$('#' + id).fadeIn();
+		$('#' + data.id).fadeOut(function() {
+			$('#' + data.id).attr('src', '/img/' + data.id + '?r=' + t);
+			$('#' + data.id).fadeIn();
 		});
 	});
 });

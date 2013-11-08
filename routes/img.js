@@ -4,7 +4,6 @@ var QRCode = require('qrcode');
 
 exports.post = function(req, res, next) {
 	function saveImg(path, gsData) {
-
 		im.resize({
 			srcPath : path,
 			dstPath : path,
@@ -29,7 +28,10 @@ exports.post = function(req, res, next) {
 						fs.unlink(path, function(err) {
 							if (err)
 								throw err;
-							io.sockets.emit('imgid', req.params.id);
+							io.sockets.emit('imgid', {
+								id : req.params.id,
+								tag : req.body.tag
+							});
 							res.redirect(req.url);
 						});
 					});
@@ -67,13 +69,15 @@ exports.post = function(req, res, next) {
 
 exports.del = function(req, res) {
 	db.gridfs().unlink(req.params.id, function(err, gs) {
-		io.sockets.emit('imgid', req.params.id);
+		io.sockets.emit('imgid', {
+			id : req.params.id,
+			del : true
+		});
 		res.json({
 			success : false
 		});
 	});
 };
-
 
 exports.get = function(req, res) {
 	db.gridfs().open(req.params.id, 'r', function(err, gs) {
