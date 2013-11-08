@@ -54,6 +54,7 @@ global.io = socket.listen(server, {
 
 global.io.configure(function() {
 	io.set('log level', 0);
+	io.set( 'origins', '*:*' );
 });
 
 io.sockets.on('connection', function(socket) {
