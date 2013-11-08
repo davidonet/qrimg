@@ -28,10 +28,11 @@ exports.tag = function(req, res) {
 	db.collection('fs.files').find({
 		"metadata.tag" : '#' + req.params.tag
 	}, {
-		filename : 1
-	}).toArray(function(err, imgs) {
+		filename : 1,
+		uploadDate:1
+	}).sort({uploadDate:-1}).toArray(function(err, imgs) {
 		res.header("Access-Control-Allow-Origin", "*");
 		res.header("Access-Control-Allow-Headers", "X-Requested-With");
-		res.json(imgs);
+		res.json(imgs.slice(0,16));
 	});
 };
