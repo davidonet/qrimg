@@ -40,10 +40,12 @@ exports.post = function(req, res, next) {
 
 	var gsData = {
 		metadata : {
-			qrid : req.params.id
+			qrid : req.params.id,
+			tag : req.body.tag
 		}
 	};
 	var path;
+
 	if (req.body.imgBase64) {
 		path = '/tmp/' + req.params.id + '.png';
 		var base64Data = req.body.imgBase64.replace(/^data:image\/png;base64,/, "");
@@ -71,6 +73,7 @@ exports.del = function(req, res) {
 		});
 	});
 };
+
 
 exports.get = function(req, res) {
 	db.gridfs().open(req.params.id, 'r', function(err, gs) {

@@ -23,3 +23,13 @@ exports.webcam = function(req, res) {
 		qrid : req.params.id
 	});
 };
+
+exports.tag = function(req, res) {
+	db.collection('fs.files').find({
+		"metadata.tag" : '#' + req.params.tag
+	}, {
+		filename : 1
+	}).toArray(function(err, imgs) {
+		res.json(imgs);
+	});
+};

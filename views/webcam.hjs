@@ -8,9 +8,9 @@
 		<script src="http://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.js"></script>
 		<style>
 			body {
-				font-size: 30px;
-				font-weight: bold;
-				width: 640px;
+				font-size:30px;
+				font-weight:bold;
+				width:640px;
 			}
 		</style>
 	</head>
@@ -42,8 +42,7 @@
 				var canvas = document.getElementById("canvas"), context = canvas.getContext("2d"), video = document.getElementById("video"), videoObj = {
 					"video" : true
 				}, errBack = function(error) {
-					console.log("Video capture error: ", error.code);
-					window.location.replace("/u/{{qrid}}");
+					window.location.replace("/u/{{qrid}}" + window.location.hash);
 				};
 
 				// Put video listeners into place
@@ -61,7 +60,7 @@
 						$('#auth').hide();
 						$('#snap').fadeIn();
 					}, errBack);
-				}else{
+				} else {
 					errBack();
 				}
 				document.getElementById("video").addEventListener("click", function() {
@@ -82,7 +81,8 @@
 						type : "POST",
 						url : "/img/{{qrid}}",
 						data : {
-							imgBase64 : dataURL
+							imgBase64 : dataURL,
+							tag : window.location.hash
 						}
 					}).done(function(o) {
 						$('#sending').fadeOut();

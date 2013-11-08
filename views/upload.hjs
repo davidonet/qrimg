@@ -12,16 +12,15 @@
 		<div data-role="page">
 			<style>
 				.file-upload {
-					position: relative;
+					position:relative;
 				}
 				.file-upload input {
-					position: absolute;
-					visibility: hidden;
+					position:absolute;
+					visibility:hidden;
 				}
-				img{
+				img {
 					max-width:256px;
 				}
-				
 			</style>
 			<div data-role="header">
 				<h3>Mur QRCode</h3>
@@ -30,10 +29,10 @@
 				<form enctype="multipart/form-data" method="post" data-ajax="false" action="/img/{{qrid}}">
 					<label data-role="button" class="file-upload"> Choisir une image
 						<input type="file" name="image" id='file'/>
-						<div id="preview"></div>
-					</label>
-					
+						<div id="preview"></div> </label>
+
 					<ul id="info" data-role="listview" data-inset="true"></ul>
+					<input type="hidden" name="tag" id='tag'/>
 					<input type="submit" name="submit" value="Envoyer l'image sur l'écran"/>
 				</form>
 
@@ -58,6 +57,7 @@
 					$info.append("<li>size:<span>" + file.size + " bytes</span></li>");
 				}
 				$info.listview("refresh");
+				$('#tag').val(window.location.hash);
 			});
 
 			function displayAsImage3(file, containerid) {

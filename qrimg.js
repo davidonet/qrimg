@@ -41,7 +41,7 @@ app.get('/set/get/:sid', set.get);
 app.get('/set/del/:sid', set.del);
 app.get('/u/:id', routes.upload);
 app.get('/w/:id', routes.webcam);
-
+app.get('/tag/:tag', routes.tag);
 
 var server = http.createServer(app).listen(app.get('port'), function() {
 	console.log("Express server listening on port " + app.get('port'));
