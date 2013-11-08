@@ -30,6 +30,8 @@ exports.tag = function(req, res) {
 	}, {
 		filename : 1
 	}).toArray(function(err, imgs) {
+		res.header("Access-Control-Allow-Origin", "*");
+		res.header("Access-Control-Allow-Headers", "X-Requested-With");
 		res.json(imgs);
 	});
 };
