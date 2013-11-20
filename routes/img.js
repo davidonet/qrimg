@@ -50,6 +50,7 @@ exports.post = function(req, res, next) {
 
 	if (req.body.imgBase64) {
 		path = '/tmp/' + req.params.id + '.png';
+		gsData.content_type = 'image/png';
 		var base64Data = req.body.imgBase64.replace(/^data:image\/png;base64,/, "");
 		fs.writeFile(path, base64Data, 'base64', function(err) {
 			if (err) {
@@ -99,7 +100,7 @@ exports.get = function(req, res) {
 					res.redirect('http://www.placehold.it/320x320/EFEFEF/AAAAAA');
 				else {
 					res.writeHead('200', {
-						'Content-Type' : gs.contentType,
+						'Content-Type' : (gs.contentType!='binary/octet-stream' ? gs.contentType : 'image/png'),
 						'Cache-Control' : 'public, max-age=1800'
 					});
 
