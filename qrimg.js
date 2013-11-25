@@ -32,6 +32,11 @@ app.configure('development', function() {
 	app.use(express.errorHandler());
 });
 
+global.auth = express.basicAuth(function(user, pass, callback) {
+	var result = (user === 'admin' && pass === 'dummy');
+	callback(null/* error */, result);
+});
+
 app.get('/:sid', routes.index);
 app.post('/img/:id', img.post);
 app.get('/img/:id', img.get);
@@ -42,6 +47,8 @@ app.get('/set/del/:sid', set.del);
 app.get('/u/:id', routes.upload);
 app.get('/w/:id', routes.webcam);
 app.get('/tag/:tag', routes.tag);
+app.get('/admin/:tag', auth, routes.admin);
+app.get('/admin/del/:id/:tag', auth, img.admindel);
 
 var server = http.createServer(app).listen(app.get('port'), function() {
 	console.log("Express server listening on port " + app.get('port'));
@@ -54,7 +61,7 @@ global.io = socket.listen(server, {
 
 global.io.configure(function() {
 	io.set('log level', 0);
-	io.set( 'origins', '*:*' );
+	io.set('origins', '*:*');
 });
 
 io.sockets.on('connection', function(socket) {

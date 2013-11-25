@@ -29,10 +29,28 @@ exports.tag = function(req, res) {
 		"metadata.tag" : '#' + req.params.tag
 	}, {
 		filename : 1,
-		uploadDate:1
-	}).sort({uploadDate:-1}).toArray(function(err, imgs) {
+		uploadDate : 1
+	}).sort({
+		uploadDate : -1
+	}).toArray(function(err, imgs) {
 		res.header("Access-Control-Allow-Origin", "*");
 		res.header("Access-Control-Allow-Headers", "X-Requested-With");
-		res.json(imgs.slice(0,16));
+		res.json(imgs.slice(0, 16));
+	});
+};
+
+exports.admin = function(req, res) {
+	db.collection('fs.files').find({
+		"metadata.tag" : '#' + req.params.tag
+	}, {
+		filename : 1,
+		uploadDate : 1
+	}).sort({
+		uploadDate : -1
+	}).toArray(function(err, imgs) {
+		var data = {};
+		data.tag = req.params.tag;
+		data.imgs = imgs;
+		res.render('admin', data);
 	});
 };

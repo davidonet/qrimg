@@ -80,6 +80,16 @@ exports.del = function(req, res) {
 	});
 };
 
+exports.admindel = function(req, res) {
+	db.gridfs().unlink(req.params.id, function(err, gs) {
+		io.sockets.emit('imgid', {
+			id : req.params.id,
+			del : true
+		});
+		res.redirect('/admin/'+req.params.tag);
+	});
+};
+
 exports.get = function(req, res) {
 	db.gridfs().open(req.params.id, 'r', function(err, gs) {
 		if (err) {
@@ -100,7 +110,7 @@ exports.get = function(req, res) {
 					res.redirect('http://www.placehold.it/320x320/EFEFEF/AAAAAA');
 				else {
 					res.writeHead('200', {
-						'Content-Type' : (gs.contentType!='binary/octet-stream' ? gs.contentType : 'image/png'),
+						'Content-Type' : (gs.contentType != 'binary/octet-stream' ? gs.contentType : 'image/png'),
 						'Cache-Control' : 'public, max-age=1800'
 					});
 
