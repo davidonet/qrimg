@@ -18,6 +18,8 @@ exports.getTxt = function(req, res) {
 		"txt" : 1,
 		"date" : 1
 	}).toArray(function(err, msgs) {
+		res.header("Access-Control-Allow-Origin", "*");
+		res.header("Access-Control-Allow-Headers", "X-Requested-With");
 		res.json(msgs);
 	});
 };
