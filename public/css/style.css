@@ -1,0 +1,29 @@
+@import 'reset.css';
+body {
+  margin: 0 0 0 0;
+  overflow: hidden;
+  background: -webkit-radial-gradient(rgba(250, 250, 250, 0.5), rgba(230, 230, 230, 0.5) 35%, rgba(128, 128, 128, 0.7));
+  padding-top: 64px;
+  padding-left: 8px;
+  color: #eee;
+}
+.holder {
+  width: 238px;
+  height: 238px;
+  position: relative;
+  display: block;
+  float: left;
+  outline: solid 1px rgba(0, 0, 0, 0.1);
+  outline-offser: -1px;
+}
+img {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+}
+input {
+  border: solid 1px red;
+}

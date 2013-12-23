@@ -9,7 +9,7 @@ global.db = mongo.db("mongodb://dbserver/qrimg", {
 	safe : false
 });
 
-var img = require('./routes/img'), set = require('./routes/set');
+var img = require('./routes/img'), set = require('./routes/set'), msg = require('./routes/msg');
 
 var app = express();
 
@@ -49,6 +49,9 @@ app.get('/w/:id', routes.webcam);
 app.get('/tag/:tag', routes.tag);
 app.get('/admin/:tag', auth, routes.admin);
 app.get('/admin/del/:id/:tag', auth, img.admindel);
+app.post('/msg/newTxt', msg.newTxt);
+app.get('/msg/txts', msg.getTxt);
+app.get('/msg/del/:id', msg.delTxt);
 
 var server = http.createServer(app).listen(app.get('port'), function() {
 	console.log("Express server listening on port " + app.get('port'));
@@ -67,6 +70,9 @@ global.io.configure(function() {
 io.sockets.on('connection', function(socket) {
 	socket.on('imgid', function(data) {
 		socket.broadcast.emit('imgid', data);
+	});
+	socket.on('newtxt', function(data) {
+		socket.broadcast.emit('newtxt', data);
 	});
 	this.setMaxListeners(0);
 });

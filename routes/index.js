@@ -51,6 +51,15 @@ exports.admin = function(req, res) {
 		var data = {};
 		data.tag = req.params.tag;
 		data.imgs = imgs;
-		res.render('admin', data);
+
+		db.msg.find({
+			"$query" : {},
+			"$orderby" : {
+				"date" : -1
+			}
+		}).toArray(function(err, msgs) {
+			data.msgs = msgs;
+			res.render('admin', data);
+		});
 	});
 };

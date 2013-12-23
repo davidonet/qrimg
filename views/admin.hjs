@@ -31,8 +31,17 @@
 				{{#imgs}}
 				<div>
 					<img id='{{_id}}' src='/img/{{filename}}'/>
-					<a class='btn' href='/admin/del/{{filename}}/{{tag}}'>Supprimer</a>
+					<a class='btn' href='/admin/del/{{filename}}/{{tag}}'><i class="icon-remove"></i></a>
 				</div>
 				{{/imgs}}
+			</div>
+			<div class="container">
+				{{#msgs}}
+				<div>
+					<p id='{{_id}}'>
+						{{txt}} <span style='float:right'><i class="icon-user"></i> {{number}} <a class='btn' href='/msg/del/{{_id}}'><i class="icon-remove"></i></a></span>
+					</p>
+				</div>
+				{{/msgs}}
 			</div>
 	</body>
