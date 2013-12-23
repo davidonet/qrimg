@@ -3,7 +3,7 @@ db.bind('msg');
 exports.newTxt = function(req, res) {
 	req.body['date'] = new Date();
 	db.msg.insert(req.body, function(err, data) {
-		global.io.sockets.emit('newtxt', req.body.txt);
+		global.io.sockets.emit('newtxt', req.body);
 		res.json(req.body);
 	});
 };
