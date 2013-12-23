@@ -39,7 +39,7 @@
 				{{#msgs}}
 				<div>
 					<p id='{{_id}}'>
-						{{txt}} <span style='float:right'><i class="icon-user"></i> {{number}} <a class='btn' href='/msg/del/{{_id}}'><i class="icon-remove"></i></a></span>
+						<span class="span9">{{txt}}</span> <span style='text-align:right'><i class="icon-user"></i> {{number}} <a class='btn' href='/msg/del/{{_id}}'><i class="icon-remove"></i></a></span>
 					</p>
 				</div>
 				{{/msgs}}
